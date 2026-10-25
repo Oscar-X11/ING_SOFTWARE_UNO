@@ -62,7 +62,8 @@ public class AltaUsuario extends javax.swing.JFrame {
         intereses = intereses.trim();
         // 5.2.- Preparar la consulta para guardar los datos en la base de datos
         try {
-            String sql = "INSERT INTO empleados (nombre, apellidop, apellidom, telefono, correo, estado_civil, hijos, intereses) VALUES (?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO empleados (nombre, apellidop, apellidom, "
+                    + "telefono, correo, estado_civil, hijos, intereses) VALUES (?,?,?,?,?,?,?,?)";
             pps = cn.prepareStatement(sql);
             pps.setString(1, nombre);
             pps.setString(2, aP);
