@@ -56,11 +56,11 @@ public class MostrarUsuarios extends javax.swing.JFrame {
             //3.6.- establecer la apertura de la base de datos y ejecutar la consulta
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
-            
-            //3.7.- recorrer la informacion obtenida para depurarla y 
-            //conformar cada registro para su presentacion
-            while (rs.next()) {                
-                //tomar cada dato obtenido para guardalo en su respectiva posicion y conformar los resgistroo a presentar en la ventana
+
+            //3.7.- recorrer la informacion obtenida para depurarla y conformar cada registro para su presentacion
+            while (rs.next()) {
+                //tomar cada dato obtenido para guardalo en su respectiva posicion y
+                //conformar los resgistroo a presentar en la ventana
                 arr[0] = nombre = rs.getString(2);
                 arr[1] = ap = rs.getString(3);
                 arr[2] = am = rs.getString(4);
@@ -69,13 +69,12 @@ public class MostrarUsuarios extends javax.swing.JFrame {
                 arr[5] = estado_civil = rs.getString(7);
                 arr[6] = hijos = rs.getInt(8);
                 arr[7] = intereses = rs.getString(9);
-   
+
                 //añadir como fila de la tabla el registro que se acaba de conformar 
                 miTabla.addRow(arr);
                 //envir la tabla completa de regristros a la tabla de la interfaz 
                 tablaUsuarios.setModel(miTabla);
-                
-                
+
             }
         } catch (SQLException ex) {
             System.getLogger(MostrarUsuarios.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
