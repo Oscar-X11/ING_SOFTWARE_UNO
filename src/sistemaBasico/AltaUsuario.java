@@ -32,7 +32,7 @@ public class AltaUsuario extends javax.swing.JFrame {
     ResultSet rs;
     //5.- metodo que captura los datos del forumularo y los guarda en la BD
     public void capturaGuardaDatos() {
-        // 1. Capturar información
+        // 5.1.- Capturar información
         String nombre = campoNombre.getText();
         String aP = campoApPat.getText();
         String aM = campoApMat.getText();
@@ -46,7 +46,6 @@ public class AltaUsuario extends javax.swing.JFrame {
         } else if (radioNo.isSelected()) {
             hijos = 0;
         }
-
         String intereses = "";
         if (jCheckLibros.isSelected()) {
             intereses += "Libros ";
@@ -61,8 +60,7 @@ public class AltaUsuario extends javax.swing.JFrame {
             intereses += "Otros ";
         }
         intereses = intereses.trim();
-
-        // 2. Preparar la consulta para guardar los datos en la base de datos
+        // 5.2.- Preparar la consulta para guardar los datos en la base de datos
         try {
             String sql = "INSERT INTO empleados (nombre, apellidop, apellidom, telefono, correo, estado_civil, hijos, intereses) VALUES (?,?,?,?,?,?,?,?)";
             pps = cn.prepareStatement(sql);
@@ -74,8 +72,8 @@ public class AltaUsuario extends javax.swing.JFrame {
             pps.setString(6, estado_civil);
             pps.setInt(7, hijos);
             pps.setString(8, intereses);
-
-            // 3. Ejecutar la consulta y avisar al usuario
+            
+            //5.3.- Ejecutar la consulta y avisar al usuario
             pps.executeUpdate();
             JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
             limpiaCaampo();
