@@ -26,11 +26,11 @@ public class AltaUsuario extends javax.swing.JFrame {
     //2.- crear un objeto que apoye en las tareas que esta 
     //clase hara en la BD;
     Connection cn = miConexion.conexionBD();
-    //3.-crear un objeto que defina la consulta con la base de datos
+    //3.-crear un objeto que defina la consulta con la BD
     PreparedStatement pps;
     //4.-crear un objeto que ejecute la consulta
     ResultSet rs;
-    //5.- metodo que captura los datos del forumularo y los guarda en la bd
+    //5.- metodo que captura los datos del forumularo y los guarda en la BD
     public void capturaGuardaDatos() {
         // 1. Capturar información
         String nombre = campoNombre.getText();
