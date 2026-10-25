@@ -8,6 +8,7 @@ package sistemaBasico;
  *
  * @author os225
  */
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
@@ -20,19 +21,15 @@ public class AltaUsuario extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AltaUsuario.class.getName());
 
-    /**
-     * Creates new form menuAltaUser
-     */
+    //1.- crear un objeto de la clase conexion  
     conexion miConexion = new conexion();
-
+    //2.- crear un objeto que apoye en las tareas que esta 
+    //clase hara en la BD;
     Connection cn = miConexion.conexionBD();
-
-    //obejto que defina la consulta con la base de datos
+    //3.-crear un objeto que defina la consulta con la base de datos
     PreparedStatement pps;
-
-    //crear un objeto que ejecute la consulta
+    //4.-crear un objeto que ejecute la consulta
     ResultSet rs;
-
     //5.- metodo que captura los datos del forumularo y los guarda en la bd
     public void capturaGuardaDatos() {
         // 1. Capturar información
@@ -63,14 +60,12 @@ public class AltaUsuario extends javax.swing.JFrame {
         if (jCheckOtros.isSelected()) {
             intereses += "Otros ";
         }
-        intereses = intereses.trim(); // Quita el último espacio sobrante
+        intereses = intereses.trim();
 
-// 2. Preparar la consulta para guardar los datos en la base de datos
         // 2. Preparar la consulta para guardar los datos en la base de datos
         try {
             String sql = "INSERT INTO empleados (nombre, apellidop, apellidom, telefono, correo, estado_civil, hijos, intereses) VALUES (?,?,?,?,?,?,?,?)";
             pps = cn.prepareStatement(sql);
-
             pps.setString(1, nombre);
             pps.setString(2, aP);
             pps.setString(3, aM);
@@ -84,13 +79,13 @@ public class AltaUsuario extends javax.swing.JFrame {
             pps.executeUpdate();
             JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
             limpiaCaampo();
-
+            
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al guardar los datos: " + ex.getMessage());
         }
     }
 
-    //6metodo que limpia los campos
+    //6.- metodo que limpia los campos
     public void limpiaCaampo() {
         campoNombre.setText("");
         campoApPat.setText("");
@@ -372,6 +367,7 @@ public class AltaUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_jCheckDeportesActionPerformed
 
     private void btnGuardarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarUsuarioActionPerformed
+        //se ejecuta el metodo para realizar la captura de datos
         capturaGuardaDatos();
     }//GEN-LAST:event_btnGuardarUsuarioActionPerformed
 
