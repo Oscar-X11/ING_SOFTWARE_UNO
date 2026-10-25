@@ -16,15 +16,15 @@ public class MostrarUsuarios extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MostrarUsuarios.class.getName());
 
-    //declarar el objeto que permite que esta clase se conecte con la base de datos
+    //1.-declarar el objeto que permite que esta clase se conecte con la base de datos
     conexion miConexion = new conexion();
-    //declarar el obj para ejecuta tares en la bas de datos
+    //2.-declarar el obj para ejecuta tares en la bas de datos
     Connection cn = miConexion.conexionBD();
-    //definir un metod que moldeara la tabla para presentar los datos en la ventana
+    //3.-definir un metodo que moldeara la tabla para presentar los datos en la ventana
     public void mostrarDatos(){
         //3.1 definir el modelo basico de la tabla 
         DefaultTableModel miTabla = new DefaultTableModel();
-        //agregar encabezados
+        // agregar encabezados
         miTabla.addColumn("NOMBRE");
         miTabla.addColumn("AP");
         miTabla.addColumn("AM");
@@ -34,7 +34,7 @@ public class MostrarUsuarios extends javax.swing.JFrame {
         miTabla.addColumn("HIJOS");
         miTabla.addColumn("INTERESES");
         
-        //3.2 Definir variables para recibir cada dato que se traiga de cada registro en la bd
+        //3.2.- Definir variables para recibir cada dato que se traiga de cada registro en la bd
         String nombre ="";
         String ap="";
         String am="";
@@ -44,20 +44,21 @@ public class MostrarUsuarios extends javax.swing.JFrame {
         int hijos=0;
         String intereses="";
         
-        //definir un obj para colocar todos los datos por cada registro
+        //3.3.- definir un obj para colocar todos los datos por cada registro
         Object arr[] = new  Object[8];
-        //colocar el modelo de tabla con encabezados en la tabal de la ventana
+        //3.4.- colocar el modelo de tabla con encabezados en la tabal de la ventana
         tablaUsuarios.setModel(miTabla);
-        //preparar y ejecutar la consulta para obtener los datos des de la base de datos
+        //3.5.- preparar y ejecutar la consulta para obtener los datos des de la base de datos
         //definir la consulta mediante una varible
         String sql = "SELECT * FROM empleados";
         
         try {
-            //establecesr la apertura de la base de datos
+            //3.6.- establecer la apertura de la base de datos y ejecutar la consulta
             Statement st = cn.createStatement();
-            //ejecutar la consulta
             ResultSet rs = st.executeQuery(sql);
-            //recorrer la informacion obtenida para depurarla y conformar cada registro para su presentacion
+            
+            //3.7.- recorrer la informacion obtenida para depurarla y 
+            //conformar cada registro para su presentacion
             while (rs.next()) {                
                 //tomar cada dato obtenido para guardalo en su respectiva posicion y conformar los resgistroo a presentar en la ventana
                 arr[0] = nombre = rs.getString(2);
@@ -68,12 +69,11 @@ public class MostrarUsuarios extends javax.swing.JFrame {
                 arr[5] = estado_civil = rs.getString(7);
                 arr[6] = hijos = rs.getInt(8);
                 arr[7] = intereses = rs.getString(9);
-                //AÑADIR COMO FILA DE LA TABLA EL REGISTRO QUE SE ACABAD DE CONFORMAR
-                
+   
+                //añadir como fila de la tabla el registro que se acaba de conformar 
                 miTabla.addRow(arr);
-                //
-                tablaUsuarios.setModel(miTabla)
-                        ;
+                //envir la tabla completa de regristros a la tabla de la interfaz 
+                tablaUsuarios.setModel(miTabla);
                 
                 
             }
@@ -159,40 +159,45 @@ public class MostrarUsuarios extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(25, 25, 25)
                                 .addComponent(jLabel2)))))
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(71, 71, 71)
+                        .addGap(75, 75, 75)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(82, 82, 82))
+                        .addGap(100, 100, 100))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel2)
-                        .addGap(18, 18, 18)))
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                        .addGap(25, 25, 25)))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRegresar)
                     .addComponent(btnSalir)
                     .addComponent(btnMostrar))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
