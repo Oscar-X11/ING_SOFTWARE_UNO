@@ -85,7 +85,7 @@
                                               <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
-                                      <Component id="btnGuardarUsuario" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="btnActualizarUsuario" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="btnRegresar" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
@@ -193,7 +193,7 @@
                               <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="btnGuardarUsuario" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnActualizarUsuario" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="btnRegresar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -408,12 +408,13 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="btnGuardarUsuario">
+        <Component class="javax.swing.JButton" name="btnActualizarUsuario">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Guardar Usuario"/>
+            <Property name="text" type="java.lang.String" value="Actualizar Usuario"/>
+            <Property name="actionCommand" type="java.lang.String" value=""/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarUsuarioActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnActualizarUsuarioActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnRegresar">
@@ -451,6 +452,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Buscar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBuscarRegistroUserActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

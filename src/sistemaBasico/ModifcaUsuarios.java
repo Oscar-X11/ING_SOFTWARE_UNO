@@ -20,9 +20,6 @@ public class ModifcaUsuarios extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ModifcaUsuarios.class.getName());
 
-    /**
-     * Creates new form menuAltaUser
-     */
     conexion miConexion = new conexion();
 
     Connection cn = miConexion.conexionBD();
@@ -32,20 +29,83 @@ public class ModifcaUsuarios extends javax.swing.JFrame {
 
     //4crear un objeto que ejecute la consulta
     ResultSet rs;
-    
+
     //5 definir un metodo que obtiene los id de los registros para ser seleccionados para su modificacion
-    
-    public void obtenerRegistroUsuarios(){
+    public void obtenerRegistroUsuarios() {
         try {
             //1 obtener todos los registros de la tabla usuarios para contabilizarlos
             pps = cn.prepareStatement("SELECT * FROM empleados");
+            //2. Ejecutar la consulta y obtener los registros
+            rs = pps.executeQuery();
+            //3. contar los registros obtenidos
+            while (rs.next()) {
+                comboUsuarisos.addItem("" + rs.getInt("id"));
+            }
         } catch (SQLException ex) {
             System.getLogger(ModifcaUsuarios.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
 
-    //5.- metodo que captura los datos del forumularo y los guarda en la bd
-    public void capturaGuardaDatos() {
+    //6.- metodo que obtiene la informacion de los registros para ser presentaddos
+    public void obtieneInfoRegistros() {
+        //1- obtener el registro a buscar desde el menu
+        String registro = comboUsuarisos.getSelectedItem().toString();
+        try {
+            //2.- preparar la consulta para obtener la informacion de los registros
+            pps = cn.prepareStatement("SELECT * FROM empleados WHERE id = ?");
+            pps.setString(1, registro);
+            //3.- ejecutar la consulta
+            rs = pps.executeQuery();
+            //4.- verificar  que la consulta si haya traido informacion y tambien depurarla para que se pueda presentar en los campos correspondientes del formulario
+
+            if (rs.next()) {
+                campoNombre.setText(rs.getString("nombre"));
+                campoApPat.setText(rs.getString("apellidop"));
+                campoApMat.setText(rs.getString("apellidom"));
+                campoTelefono.setText(rs.getString("telefono"));
+                campoApPat.setText(rs.getString("telefono"));
+                campoEmail.setText(rs.getString("correo"));
+                menuEstCivil.setSelectedItem(rs.getString("estado_civil"));
+                if (rs.getInt("hijos") == 1) {
+                    radioSi.setSelected(true);
+                } else {
+                    radioNo.setSelected(true);
+
+                }
+
+                String intereses = rs.getString("intereses");
+                String elementos[] = intereses.split(",");
+                for (int i = 0; i < elementos.length; i++) {
+                    if (elementos[i].equalsIgnoreCase("Libros")) {
+                        jCheckLibros.setSelected(true);
+
+                    }
+                    if (elementos[i].equalsIgnoreCase("Musica")) {
+                        jCheckMusica.setSelected(true);
+
+                    }
+                    if (elementos[i].equalsIgnoreCase("Deportes")) {
+                        jCheckDeportes.setSelected(true);
+
+                    }
+                    if (elementos[i].equalsIgnoreCase("Otros")) {
+                        jCheckOtros.setSelected(true);
+
+                    }
+
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(null, "registro no encontrado", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (SQLException ex) {
+            System.getLogger(ModifcaUsuarios.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+    }
+
+    //7.- metodo que captura los datos del forumularo y los guarda en la bd
+    public void capturaActualizaDatos() {
         // 1. Capturar información
         String nombre = campoNombre.getText();
         String aP = campoApPat.getText();
@@ -76,10 +136,13 @@ public class ModifcaUsuarios extends javax.swing.JFrame {
         }
         intereses = intereses.trim(); // Quita el último espacio sobrante
 
-// 2. Preparar la consulta para guardar los datos en la base de datos
+// 2. Preparar la consulta para actualizar los datos en la base de datos
         // 2. Preparar la consulta para guardar los datos en la base de datos
         try {
-            String sql = "INSERT INTO empleados (nombre, apellidop, apellidom, telefono, correo, estado_civil, hijos, intereses) VALUES (?,?,?,?,?,?,?,?)";
+
+            //modificar para la base de datos
+            // Consulta UPDATE corregida
+            String sql = "UPDATE empleados SET nombre = ?, apellidop = ?, apellidom = ?, telefono = ?, correo = ?, estado_civil = ?, hijos = ?, intereses = ? WHERE id = ?";
             pps = cn.prepareStatement(sql);
 
             pps.setString(1, nombre);
@@ -92,8 +155,14 @@ public class ModifcaUsuarios extends javax.swing.JFrame {
             pps.setString(8, intereses);
 
             // 3. Ejecutar la consulta y avisar al usuario
-            pps.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+            int res = pps.executeUpdate();
+            
+             if (res>=0) {
+             JOptionPane.showMessageDialog(null, "datos actualizados");
+                }else{
+                 JOptionPane.showMessageDialog(null, "datos NO actualizados");
+             }
+            
             limpiaCaampo();
 
         } catch (SQLException ex) {
@@ -120,7 +189,8 @@ public class ModifcaUsuarios extends javax.swing.JFrame {
 
     public ModifcaUsuarios() {
         initComponents();
-        this.setTitle("ALTA USUARIOS");
+        obtenerRegistroUsuarios();
+        this.setTitle("MODIFICAR USUARIOS");
         this.setLocationRelativeTo(null);
     }
 
@@ -156,7 +226,7 @@ public class ModifcaUsuarios extends javax.swing.JFrame {
         jCheckDeportes = new javax.swing.JCheckBox();
         jCheckOtros = new javax.swing.JCheckBox();
         jLabel10 = new javax.swing.JLabel();
-        btnGuardarUsuario = new javax.swing.JButton();
+        btnActualizarUsuario = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
@@ -231,8 +301,9 @@ public class ModifcaUsuarios extends javax.swing.JFrame {
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/usuarios.png"))); // NOI18N
 
-        btnGuardarUsuario.setText("Guardar Usuario");
-        btnGuardarUsuario.addActionListener(this::btnGuardarUsuarioActionPerformed);
+        btnActualizarUsuario.setText("Actualizar Usuario");
+        btnActualizarUsuario.setActionCommand("");
+        btnActualizarUsuario.addActionListener(this::btnActualizarUsuarioActionPerformed);
 
         btnRegresar.setText("Regresar");
         btnRegresar.addActionListener(this::btnRegresarActionPerformed);
@@ -243,6 +314,7 @@ public class ModifcaUsuarios extends javax.swing.JFrame {
         jLabel11.setText("SELECCIONA REGISTRO A MODIFICAR:");
 
         btnBuscarRegistroUser.setText("Buscar");
+        btnBuscarRegistroUser.addActionListener(this::btnBuscarRegistroUserActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -278,7 +350,7 @@ public class ModifcaUsuarios extends javax.swing.JFrame {
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel7)
                                             .addComponent(jLabel4)))
-                                    .addComponent(btnGuardarUsuario)
+                                    .addComponent(btnActualizarUsuario)
                                     .addComponent(btnRegresar)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -360,7 +432,7 @@ public class ModifcaUsuarios extends javax.swing.JFrame {
                             .addComponent(jCheckOtros)
                             .addComponent(jLabel8))
                         .addGap(18, 18, 18)
-                        .addComponent(btnGuardarUsuario)
+                        .addComponent(btnActualizarUsuario)
                         .addGap(34, 34, 34)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnRegresar)
@@ -399,16 +471,17 @@ public class ModifcaUsuarios extends javax.swing.JFrame {
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         menuApartadoUsuarios mu = new menuApartadoUsuarios();
         mu.setVisible(true);
-        this.dispose();        
+        this.dispose();
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void jCheckDeportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckDeportesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckDeportesActionPerformed
 
-    private void btnGuardarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarUsuarioActionPerformed
-        capturaGuardaDatos();
-    }//GEN-LAST:event_btnGuardarUsuarioActionPerformed
+    private void btnActualizarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarUsuarioActionPerformed
+       
+        capturaActualizaDatos();
+    }//GEN-LAST:event_btnActualizarUsuarioActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         System.exit(0);
@@ -417,6 +490,10 @@ public class ModifcaUsuarios extends javax.swing.JFrame {
     private void campoApPatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoApPatActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_campoApPatActionPerformed
+
+    private void btnBuscarRegistroUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarRegistroUserActionPerformed
+        obtieneInfoRegistros();
+    }//GEN-LAST:event_btnBuscarRegistroUserActionPerformed
 
     /**
      * @param args the command line arguments
@@ -444,8 +521,8 @@ public class ModifcaUsuarios extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizarUsuario;
     private javax.swing.JButton btnBuscarRegistroUser;
-    private javax.swing.JButton btnGuardarUsuario;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JTextField campoApMat;
